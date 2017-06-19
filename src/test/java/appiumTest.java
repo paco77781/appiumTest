@@ -129,6 +129,7 @@ public class appiumTest {
             Assert.assertTrue("Correcto", texto2.equalsIgnoreCase(asercion));
             System.out.println("vueltas es "+vueltas);
 
+
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
