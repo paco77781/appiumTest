@@ -14,6 +14,8 @@ import java.net.URL;
 import java.util.List;
 
 
+
+
 /**
  * Created by appium on 13/3/17.
  */
@@ -55,7 +57,7 @@ public class appiumTest {
         desiredCapabilities.setCapability("realDeviceLogger","/usr/local/lib/node_modules/deviceconsole/deviceconsole");
 
         //driver = new IOSDriver(new URL("http://0.0.0.0:4723/wd/hub"),desiredCapabilities);
-         driver = new IOSDriver<WebElement>(new URL("http://127.0.0.1:4723/wd/hub"),desiredCapabilities);
+        driver = new IOSDriver<WebElement>(new URL("http://127.0.0.1:4723/wd/hub"),desiredCapabilities);
 
         //driver = new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"),desiredCapabilities){};
         wait=new WebDriverWait(driver,60);
@@ -68,38 +70,74 @@ public class appiumTest {
 
     @Test
     public void selectLoginWithEmail() {
+        String correo= "";
+        String password="";
+        String asercion="";
+        int vueltas=-1;
+        //for (vueltas= 0; vueltas <4; vueltas++) {
+        do{
+            vueltas ++ ;
+            if(vueltas==0) {
+                correo= "micorreo@ibermatica.com";
+                password= "mipassword";
+                asercion="Login OK";
+            }
+            else if(vueltas==1)
+            {   correo= "tiuyhgyiu";
+                password= "mipassword";
+                asercion="Login KO";
+            }
+            else if(vueltas==2)
+            {   correo= " ";
+                password= "mipassword";
+                asercion="Login KO";
+            }
+            else if(vueltas==3)
+            {   correo= " ";
+                password= " ";
+                asercion="Login KO";
+            }
+            List<WebElement> elems = driver.findElements(By.className("UIATextField"));
+            int contador = 0;
+            for (WebElement elem : elems) {
+                contador++;
+                if (contador == 1) {
+                    elem.clear();
+                    elem.sendKeys(correo);
+                } else {
+                    elem.clear();
+                    elem.sendKeys(password);
+                }
+            }
 
-        List<WebElement> elems = driver.findElements(By.className("UIATextField"));
-        for (WebElement elem : elems) {
-            elem.sendKeys("trytryte");
-        }
+            //WebElement cajaCorreo = driver.findElement(By.name("Email"));
+            WebElement cajaCorreo = driver.findElement(By.xpath("//UIAApplication[1]/UIAWindow[1]"));
+            //cajaCorreo.sendKeys(password);
 
-        System.out.print("antes de cajacorreo");
-        //WebElement cajaCorreo = driver.findElement(By.name("Email"));
-        WebElement cajaCorreo = driver.findElement(By.xpath("//UIAApplication[1]/UIAWindow[1]"));
-        cajaCorreo.sendKeys("correo");
-
-        WebElement button = driver.findElement(By.className("UIAButton"));
-        button.click();
+            WebElement button = driver.findElement(By.className("UIAButton"));
+            button.click();
 
 
-        WebElement texto =driver.findElement(By.className("UIAAlert"));
-        //WebElement texto =driver.findElement(By.name("Lo2gin KO"));
-        //WebElement texto = driver.findElement(By.className("XCUIElementTypeAlert"));
-        String texto2 = texto.getAttribute("label");
-        System.out.print(texto2);
-        String codigo = driver.getPageSource();
-        System.out.println("codigo es "+codigo);
+            WebElement texto = driver.findElement(By.className("UIAAlert"));
+            //WebElement texto =driver.findElement(By.name("Lo2gin KO"));
+            //WebElement texto = driver.findElement(By.className("XCUIElementTypeAlert"));
+            String texto2 = texto.getAttribute("label");
+            System.out.print(texto2);
+            String codigo = driver.getPageSource();
+            System.out.println("codigo es " + codigo);
 
-        Assert.assertTrue("Correcto",texto2.equalsIgnoreCase("Login KO"));
+            Assert.assertTrue("Correcto", texto2.equalsIgnoreCase(asercion));
+            System.out.println("vueltas es "+vueltas);
 
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+            }
 
-        try {
-           Thread.sleep(5000);
-         } catch (InterruptedException e) {
-        }
+            WebElement boton2 =driver.findElement(By.name("Aceptar"));
+            boton2.click();
 
-
+        } while (vueltas < 4);
     }
 
 }
