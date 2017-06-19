@@ -130,10 +130,10 @@ public class appiumTest {
             System.out.println("vueltas es "+vueltas);
 
 
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-            }
+            //try {
+            //    Thread.sleep(5000);
+           // } catch (InterruptedException e) {
+           // }
 
             WebElement boton2 =driver.findElement(By.name("Aceptar"));
             boton2.click();
